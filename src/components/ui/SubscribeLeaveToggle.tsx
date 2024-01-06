@@ -2,14 +2,26 @@
 import { FC } from "react"
 import { Button } from "./Button"
 import { useMutation } from "@tanstack/react-query"
+import { SubscribeToSubredditPayload } from "@/lib/validators/subreddit"
+import axios from "axios"
 
-interface SubscribeLeaveToggleProps {}
+interface SubscribeLeaveToggleProps {
+  subredditId: string
+}
 
-const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({}) => {
+const SubscribeLeaveToggle: FC<SubscribeLeaveToggleProps> = ({
+  subredditId,
+}) => {
   const isSubscribed = false
 
   const {} = useMutation({
-    mutationFn: async () => {},
+    mutationFn: async () => {
+      const payload: SubscribeToSubredditPayload = {
+        subredditId,
+      }
+      const { data } = await axios.post("/api/subreddit/subscribe", payload)
+      return data as string
+    },
   })
 
   return isSubscribed ? (
